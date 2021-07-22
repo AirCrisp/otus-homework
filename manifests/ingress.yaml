@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: base-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  rules:
+  - host: arch.homework
+    http:
+      paths:
+        - path: /(.*)
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: base-service
+              port:
+                number: 8000
+        - path: /otusapp/daria_agafonova/(.*)
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: base-service
+              port:
+                number: 8000
