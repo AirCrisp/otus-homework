@@ -1,0 +1,15 @@
+apiVersion: skaffold/v2beta19
+kind: Config
+metadata:
+  name: otusapp
+build:
+  artifacts:
+  - image: aircrisp/otus-app
+    docker:
+      dockerfile: Dockerfile
+deploy:
+  kubectl:
+    manifests:
+    - manifests/deployment.yaml
+    - manifests/ingress.yaml
+    - manifests/service.yaml

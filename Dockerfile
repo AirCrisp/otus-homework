@@ -9,4 +9,4 @@ FROM mhart/alpine-node:slim-16
 WORKDIR /app
 COPY --from=0 /app .
 COPY . .
-CMD ["node", "index.js"]
+CMD ["node", "src/index.js"]

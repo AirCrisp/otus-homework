@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: base-deployment
+    name: crud-deployment
 spec:
     replicas: 2
     selector:
        matchLabels:
-          app: base-app
+          app: crud-app
     template:
        metadata:
           labels:
-             app: base-app
+             app: crud-app
        spec:
           containers:
-          - name: base-app-container
-            image: aircrisp/otus-app:homework1
+          - name: crud-app-container
+            image: aircrisp/otus-app:homework2
             ports:
               - name: web
                 containerPort: 8080
