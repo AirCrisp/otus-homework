@@ -1,4 +1,4 @@
-import { UserController } from './controllers.js';
+import { UserRouter } from './routes.js';
 import fastify from 'fastify';
 import Boom from 'fastify-boom';
 
@@ -11,6 +11,6 @@ server.get('/health', (req, res) => {
   res.send({ status: "OK" });
 });
 
-UserController(server);
+UserRouter(server);
 
 server.listen(8080, '0.0.0.0');
