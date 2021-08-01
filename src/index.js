@@ -35,6 +35,14 @@ const schema = {
       type: 'boolean',
       default: false
     },
+    DATABASE_USERNAME: {
+      type: 'string',
+      default: 'user'
+    },
+    DATABASE_PASSWROD: {
+      type: 'string',
+      default: 'user'
+    }
   }
 }
 
@@ -44,8 +52,8 @@ await server.register(knex, {
   client: 'pg',
   connection: {
     host : server.config.DATABASE_HOST,
-    user: 'myuser',
-    password : 'passwd',
+    user: server.config.DATABASE_USERNAME,
+    password : server.config.DATABASE_PASSWROD,
     database : server.config.DATABASE_NAME
   },
   debug: server.config.DATABASE_DEBUG 

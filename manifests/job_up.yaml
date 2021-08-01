@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: user-up-migration
+  name: user-up-migration-1
 spec:
   template:
     spec:
@@ -16,7 +16,7 @@ spec:
           - "-c"
           - |
             psql $DATABASE_URI <<'EOF'
-              create table "aircrisp_user" (
+              create table if not exists "aircrisp_user" (
                 id uuid primary key default uuid_generate_v4(),
                 "firstName" varchar,
                 "lastName" varchar,

@@ -40,6 +40,16 @@ spec:
                   configMapKeyRef:
                      name: crud-config
                      key: DATABASE_DEBUG
+             - name: DATABASE_USERNAME
+               valueFrom:
+                  secretKeyRef:
+                     name: db-secret
+                     key: DATABASE_USERNAME
+             - name: DATABASE_PASSWROD
+               valueFrom:
+                  secretKeyRef:
+                     name: db-secret
+                     key: DATABASE_PASSWROD                     
              - name: APP_HOST
                valueFrom:
                   configMapKeyRef:

@@ -15,21 +15,31 @@ export const initModels = async (knex) => {
 
 export class UserRepo {
   constructor(connection) {
-    this.qb = connection('aircrisp_user');
+    this.table = 'aircrisp_user';
+    this.conn = connection;
   }
 
   async createOne(userData) {
-    return this.qb.insert(userData).returning('*')
+    return this
+      .conn(this.table)
+      .insert(userData)
+      .returning('*');
   }
   async updateOne(userData) {
-    return this.qb.update(userData).returning('*')
+    return this
+      .conn(this.table)
+      .update(userData)
+      .returning('*');
   }
   async findOne(userId) {
-    console.log(this.qb);
-    console.log(userId);
-    return this.qb.where('id', userId);
+    return this
+      .conn(this.table)
+      .where('id', userId);
   }
   async deleteOne(userId) {
-    return this.qb.where('id', userId).del();
+    return this
+      .conn(this.table)
+      .where('id', userId)
+      .del();
   }
 };
