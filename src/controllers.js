@@ -1,43 +1,38 @@
-import cryptoRandomString from 'crypto-random-string';
 import Boom from 'boom';
+import { UserRepo } from './db.js';
 const { notFound } = Boom;
 
-const store = {};
+export const UserController = (server) => {
+  const repo = new UserRepo(server.knex);
 
-export const UserController = {
-  createUser: (req) => {
-    const userData = req.body;
-    userData.id = cryptoRandomString({ length: 24, type: 'alphanumeric' });
-    store[userData.id] = userData;
-    return userData;
-  },
-  getUser: (req) => {
-    const { userId } = req.params;
-    
-    if (!store[userId]) throw notFound('User not found.');
-    
-    return store[userId];
-  },
-  updateUser: (req) => {
-    const updateData = req.body;
-    const { userId } = req.params;
-    
-    if (!store[userId]) throw notFound('User not found.');
-    
-    store[userId] = {
-      ...store[userId],
-      ...updateData
-    };
-    
-    return 'Ok';
-  },
-  deleteUser: (req) => {
-    const { userId } = req.params;
-    
-    if (!store[userId]) throw notFound('User not found.');
-    
-    store[userId] = undefined;
-    
-    return 'Ok';
+  return {
+    createUser: async function (req) {
+      const userData = req.body;
+      return repo.createOne(userData);
+    },
+    getUser: async function (req) {
+      const { userId } = req.params;
+      const users = await repo.findOne(userId);
+      if (!users?.length) throw notFound('User not found.');
+      
+      return users;
+    },
+    updateUser: async function (req) {
+      const updateData = req.body;
+      const { userId } = req.params;
+      const users = await repo.findOne(userId);
+      
+      if (!users?.length) throw notFound('User not found.');
+      
+      return repo.updateOne(updateData, userId);
+    },
+    deleteUser: async function (req) {
+      const { userId } = req.params;
+      const users = await repo.findOne(userId);
+      
+      if (!users?.length) throw notFound('User not found.');
+      
+      return repo.deleteOne(userId);
+    }
   }
-};
+}

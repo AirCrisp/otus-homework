@@ -1,11 +1,59 @@
 import { UserRouter } from './routes.js';
 import fastify from 'fastify';
 import Boom from 'fastify-boom';
+import knex from 'fastify-knexjs';
+import fastifyEnv from 'fastify-env';
+import { initModels } from './db.js';
 
+const server = fastify({ logger: { level: 'info' } });
 
-const server = fastify({ logger: true });
+const schema = {
+  type: 'object',
+  required: [ 'APP_PORT' ],
+  properties: {
+    APP_HOST: {
+      type: 'string',
+      default: 'localhost'
+    },
+    APP_PORT: {
+      type: 'number',
+      default: 3000
+    },
+    APP_LOG_LEVEL: {
+      type: 'string',
+      default: 'info'
+    },
+    DATABASE_HOST: {
+      type: 'string',
+      default: 'localhost'
+    },
+    DATABASE_NAME: {
+      type: 'string',
+      default: 'app'
+    },
+    DATABASE_DEBUG: {
+      type: 'boolean',
+      default: false
+    },
+  }
+}
 
-server.register(Boom);
+await server.register(fastifyEnv, { schema });
+
+await server.register(knex, {
+  client: 'pg',
+  connection: {
+    host : server.config.DATABASE_HOST,
+    user: 'myuser',
+    password : 'passwd',
+    database : server.config.DATABASE_NAME
+  },
+  debug: server.config.DATABASE_DEBUG 
+});
+  
+await initModels(server.knex);
+
+await server.register(Boom);
 
 server.get('/health', (req, res) => {
   res.send({ status: "OK" });
@@ -13,4 +61,4 @@ server.get('/health', (req, res) => {
 
 UserRouter(server);
 
-server.listen(8080, '0.0.0.0');
+server.listen(server.config.APP_PORT, server.config.APP_HOST);

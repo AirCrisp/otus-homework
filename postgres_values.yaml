@@ -1,0 +1,25 @@
+
+fullnameOverride: postgres
+postgresqlUsername: myuser
+postgresqlPassword: passwd
+postgresqlDatabase: crudapp
+postgresqlPostgresPassword: passwd
+
+service:
+  type: NodePort
+  port: 5432
+
+persistence:
+  enabled: true
+  size: 1Gi
+
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 250m
+
+initdbScripts:
+  my_init_script.sh: |
+     #!/bin/sh
+     export PGPASSWORD=$POSTGRESQL_PASSWORD # Set appropriately
+     psql -U postgres crudapp -c 'create extension if not exists "uuid-ossp";'

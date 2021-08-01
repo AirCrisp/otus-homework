@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: user-up-migration
+spec:
+  template:
+    spec:
+      containers:
+      - name: postgres
+        env:
+          - name: DATABASE_URI
+            value: "postgresql://myuser:passwd@postgres:5432/crudapp"
+        image: postgres:latest
+        command:
+          - sh
+          - "-c"
+          - |
+            psql $DATABASE_URI <<'EOF'
+              create table "aircrisp_user" (
+                id uuid primary key default uuid_generate_v4(),
+                "firstName" varchar,
+                "lastName" varchar,
+                username varchar(256),
+                email varchar,
+                phone varchar
+              );
+            EOF
+      restartPolicy: Never
+  backoffLimit: 4

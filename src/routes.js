@@ -2,6 +2,7 @@ import Joi from 'joi';
 import { UserController } from './controllers.js';
 
 export function UserRouter(fastify) {
+  const userController = UserController(fastify);
   fastify.post('/api/user', {
     schema: {
       body: Joi.object({
@@ -15,23 +16,23 @@ export function UserRouter(fastify) {
     validatorCompiler: ({ schema, }) => {
       return data => schema.validate(data)
     },
-    handler: UserController.createUser
+    handler: userController.createUser.bind(userController)
   });
   fastify.get('/api/user/:userId', {
     schema: {
       params: Joi.object({
-        userId: Joi.string().length(24).required()
+        userId: Joi.string().length(36).required()
       })
     },
     validatorCompiler: ({ schema }) => {
       return data => schema.validate(data)
     },
-    handler: UserController.getUser
+    handler: userController.getUser.bind(userController)
   });
   fastify.put('/api/user/:userId', {
     schema: {
       params: Joi.object({
-        userId: Joi.string().length(24).required()
+        userId: Joi.string().length(36).required()
       }),
       body: Joi.object({
         username: Joi.string().max(256),
@@ -44,17 +45,18 @@ export function UserRouter(fastify) {
     validatorCompiler: ({ schema }) => {
       return data => schema.validate(data)
     },
-    handler: UserController.updateUser
+    handler: userController.updateUser.bind(userController)
   });
   fastify.delete('/api/user/:userId', {
     schema: {
       params: Joi.object({
-        userId: Joi.string().length(24).required()
+        userId: Joi.string().length(36).required()
       })
     },
     validatorCompiler: ({ schema }) => {
       return data => schema.validate(data)
     },
-    handler: UserController.deleteUser
+    handler: userController.deleteUser.bind(userController)
   });
+  console.log(fastify.knex?.schema);
 };

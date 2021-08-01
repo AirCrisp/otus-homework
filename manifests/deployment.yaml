@@ -1,26 +1,57 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: crud-deployment
+   name: crud-deployment
 spec:
-    replicas: 2
-    selector:
-       matchLabels:
-          app: crud-app
-    template:
-       metadata:
-          labels:
-             app: crud-app
-       spec:
-          containers:
+   replicas: 2
+   selector:
+      matchLabels:
+         app: crud-app
+   template:
+      metadata:
+         labels:
+            app: crud-app
+      spec:
+         containers:
           - name: crud-app-container
             image: aircrisp/otus-app:homework2
             ports:
-              - name: web
-                containerPort: 8080
+             - name: web
+               containerPort: 8080
             readinessProbe:
-              httpGet:
-                port: 8080
-                path: /health
-              initialDelaySeconds: 10
-              periodSeconds: 5
+               httpGet:
+                 port: 8080
+                 path: /health
+               initialDelaySeconds: 10
+               periodSeconds: 5
+            env:
+             - name: DATABASE_HOST
+               valueFrom:
+                  configMapKeyRef:
+                     name: crud-config
+                     key: DATABASE_HOST
+             - name: DATABASE_NAME
+               valueFrom:
+                  configMapKeyRef:
+                     name: crud-config
+                     key: DATABASE_NAME
+             - name: DATABASE_DEBUG
+               valueFrom:
+                  configMapKeyRef:
+                     name: crud-config
+                     key: DATABASE_DEBUG
+             - name: APP_HOST
+               valueFrom:
+                  configMapKeyRef:
+                     name: crud-config
+                     key: APP_HOST
+             - name: APP_PORT
+               valueFrom:
+                  configMapKeyRef:
+                     name: crud-config
+                     key: APP_PORT
+             - name: APP_LOG_LEVEL
+               valueFrom:
+                  configMapKeyRef:
+                     name: crud-config
+                     key: APP_LOG_LEVEL
