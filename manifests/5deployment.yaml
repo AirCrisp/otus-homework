@@ -14,7 +14,7 @@ spec:
       spec:
          containers:
           - name: crud-app-container
-            image: aircrisp/otus-app:homework2
+            image: aircrisp/otus-app:homework-2
             ports:
              - name: web
                containerPort: 8080
