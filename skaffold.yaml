@@ -10,10 +10,10 @@ build:
 deploy:
   kubectl:
     manifests:
-    - manifests/secret.yaml
-    - manifests/config.yaml
+    - manifests/2secret.yaml
+    - manifests/1config.yaml
     # - manifests/job_down.yaml
-    - manifests/job_up.yaml
-    - manifests/deployment.yaml
-    - manifests/ingress.yaml
-    - manifests/service.yaml
+    - manifests/4job_up.yaml
+    - manifests/5deployment.yaml
+    - manifests/6ingress.yaml
+    - manifests/7service.yaml

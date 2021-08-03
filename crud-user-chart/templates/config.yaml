@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: crud-config
+data:
+  DATABASE_DEBUG: "{{ .Values.db.debug }}"
+  APP_HOST: "{{ .Values.app.host }}"
+  APP_PORT: "{{ .Values.app.port }}"
+  APP_LOG_LEVEL: "{{ .Values.app.logLevel }}"
+  SERVICE_PORT: "{{ .Values.service.port }}"

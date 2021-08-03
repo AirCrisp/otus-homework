@@ -1,0 +1,86 @@
+replicaCount: 2
+
+image:
+  repository: "aircrisp/otus-app"
+  pullPolicy: IfNotPresent
+  tag: "homework-2.0"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+service:
+  type: NodePort
+  port: 8000
+
+ingress:
+  enabled: true
+  className: ""
+  annotations: {
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+  }
+  hosts:
+    - host: arch.homework
+      paths:
+        - path: /(.*)
+          pathType: ImplementationSpecific
+  tls: []
+
+resources: {}
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+db:
+  debug: true
+
+app:
+  host: "0.0.0.0"
+  port: "8080"
+  logLevel: "info"
+
+postgresql:
+  fullnameOverride: postgres
+  postgresqlUsername: myuser
+  postgresqlPassword: passwd
+  postgresqlDatabase: crudapp
+  postgresqlPostgresPassword: passwd
+
+  service:
+    type: NodePort
+    port: 5432
+
+  persistence:
+    enabled: true
+    size: 1Gi
+
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 250m
+
+  initdbScripts:
+    my_init_script.sh: |
+      #!/bin/sh
+      export PGPASSWORD=$POSTGRESQL_PASSWORD # Set appropriately
+      psql -U postgres crudapp -c 'create extension if not exists "uuid-ossp";'

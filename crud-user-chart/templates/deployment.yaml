@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "crud-user-chart.fullname" . }}
+  labels:
+    {{- include "crud-user-chart.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "crud-user-chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/config.yaml") . | sha256sum }}
+      {{- end }}
+      labels:
+        {{- include "crud-user-chart.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: web
+              containerPort: {{ .Values.app.port }}
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              port: {{ .Values.app.port }}
+              path: /health
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          env:
+            - name: DATABASE_HOST
+              valueFrom:
+                secretKeyRef:
+                    name: db-secret
+                    key: DATABASE_HOST
+            - name: DATABASE_NAME
+              valueFrom:
+                secretKeyRef:
+                    name: db-secret
+                    key: DATABASE_NAME
+            - name: DATABASE_DEBUG
+              valueFrom:
+                configMapKeyRef:
+                    name: crud-config
+                    key: DATABASE_DEBUG
+            - name: DATABASE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                    name: db-secret
+                    key: DATABASE_USERNAME
+            - name: DATABASE_PASSWROD
+              valueFrom:
+                secretKeyRef:
+                    name: db-secret
+                    key: DATABASE_PASSWROD                     
+            - name: APP_HOST
+              valueFrom:
+                configMapKeyRef:
+                    name: crud-config
+                    key: APP_HOST
+            - name: APP_PORT
+              valueFrom:
+                configMapKeyRef:
+                    name: crud-config
+                    key: APP_PORT
+            - name: APP_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                    name: crud-config
+                    key: APP_LOG_LEVEL
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

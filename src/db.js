@@ -2,7 +2,7 @@ export const initModels = async (knex) => {
   const hasUsers = await knex.schema.hasTable('aircrisp_user');
   console.log(`Users are ${hasUsers}`);
   if (!hasUsers) {
-    return knex.schema.createTable('user', function(t) {
+    return knex.schema.createTable('aircrisp_user', function(t) {
       t.uuid('id').defaultTo(knex.raw('uuid_generate_v4()')).primary();
       t.string('firstName');
       t.string('lastName');

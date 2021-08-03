@@ -5,7 +5,7 @@ import knex from 'fastify-knexjs';
 import fastifyEnv from 'fastify-env';
 import { initModels } from './db.js';
 
-const server = fastify({ logger: { level: 'info' } });
+const server = fastify({ logger: { level: process.env.APP_LOG_LEVEL } });
 
 const schema = {
   type: 'object',
@@ -64,6 +64,10 @@ await initModels(server.knex);
 await server.register(Boom);
 
 server.get('/health', (req, res) => {
+  res.send({ status: "OK" });
+});
+
+server.get('/', (req, res) => {
   res.send({ status: "OK" });
 });
 
