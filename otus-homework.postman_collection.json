@@ -142,11 +142,11 @@
 	"variable": [
 		{
 			"key": "host",
-			"value": "localhost"
+			"value": "arch.homework"
 		},
 		{
 			"key": "port",
-			"value": "8080"
+			"value": "80"
 		},
 		{
 			"key": "userId",
