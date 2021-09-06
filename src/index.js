@@ -1,11 +1,15 @@
-import { UserRouter } from './routes.js';
 import fastify from 'fastify';
 import Boom from 'fastify-boom';
 import knex from 'fastify-knexjs';
 import fastifyEnv from 'fastify-env';
+import metricsPlugin from 'fastify-metrics';
+
+import { UserRouter } from './routes.js';
 import { initModels } from './db.js';
 
-const server = fastify({ logger: { level: process.env.APP_LOG_LEVEL } });
+const server = fastify({ logger: { level: process.env.APP_LOG_LEVEL || 'info' } });
+
+server.register(metricsPlugin, { endpoint: '/metrics' });
 
 const schema = {
   type: 'object',
@@ -42,6 +46,10 @@ const schema = {
     DATABASE_PASSWROD: {
       type: 'string',
       default: 'user'
+    },
+    DATABASE_PORT: {
+      type: 'string',
+      default: '5432'
     }
   }
 }
@@ -54,7 +62,8 @@ await server.register(knex, {
     host : server.config.DATABASE_HOST,
     user: server.config.DATABASE_USERNAME,
     password : server.config.DATABASE_PASSWROD,
-    database : server.config.DATABASE_NAME
+    database : server.config.DATABASE_NAME,
+    port:  server.config.DATABASE_PORT
   },
   debug: server.config.DATABASE_DEBUG 
 });

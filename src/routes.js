@@ -29,6 +29,10 @@ export function UserRouter(fastify) {
     },
     handler: userController.getUser.bind(userController)
   });
+  fastify.get('/api/user', {
+    schema: {},
+    handler: userController.getUserList.bind(userController)
+  });
   fastify.put('/api/user/:userId', {
     schema: {
       params: Joi.object({
@@ -58,5 +62,4 @@ export function UserRouter(fastify) {
     },
     handler: userController.deleteUser.bind(userController)
   });
-  console.log(fastify.knex?.schema);
 };

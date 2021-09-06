@@ -17,6 +17,10 @@ export const UserController = (server) => {
       
       return users;
     },
+    getUserList: async function () {
+      const users = await repo.findAll();      
+      return users;
+    },
     updateUser: async function (req) {
       const updateData = req.body;
       const { userId } = req.params;

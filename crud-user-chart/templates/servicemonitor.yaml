@@ -1,0 +1,22 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "crud-user-chart.fullname" . }}
+  labels:
+    {{- include "crud-user-chart.labels" . | nindent 4 }}
+spec:
+  jobLabel: {{ include "crud-user-chart.fullname" . }}
+  namespaceSelector:
+    matchNames:
+    - monitoring
+  selector:
+    matchLabels:
+      {{- include "crud-user-chart.selectorLabels" . | nindent 6 }}
+      # app: postgresql
+  endpoints:
+  - interval: 15s
+    port: web
+    path: /metrics
+  - interval: 15s
+    port: http
+    path: /metrics

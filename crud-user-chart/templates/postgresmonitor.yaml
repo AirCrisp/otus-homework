@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: postgresmon
+  labels:
+    app: postgresmon
+spec:
+  # jobLabel: postgresmon-job
+  namespaceSelector:
+    matchNames:
+    - monitoring
+  selector:
+    matchLabels:
+      app: postgresql
+  endpoints:
+  - interval: 15s
+    port: http-metrics
+    path: /metrics

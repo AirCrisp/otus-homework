@@ -14,10 +14,11 @@
     "crypto-random-string": "4.0.0",
     "fastify": "3.19.1",
     "fastify-boom": "1.0.0",
-    "fastify-env": "^2.1.1",
-    "fastify-knexjs": "^1.4.0",
+    "fastify-env": "2.1.1",
+    "fastify-knexjs": "1.4.0",
+    "fastify-metrics": "7.2.3",
     "joi": "17.4.1",
-    "knex": "^0.95.8",
-    "pg": "^8.6.0"
+    "knex": "0.95.8",
+    "pg": "8.6.0"
   }
 }

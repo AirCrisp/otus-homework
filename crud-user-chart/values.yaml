@@ -1,9 +1,9 @@
-replicaCount: 2
+replicaCount: 1
 
 image:
   repository: "aircrisp/otus-app"
   pullPolicy: IfNotPresent
-  tag: "homework-2.0"
+  tag: "homework-3"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -33,7 +33,9 @@ ingress:
   hosts:
     - host: arch.homework
       paths:
-        - path: /(.*)
+        # - path: /(.*)
+          # pathType: ImplementationSpecific
+        - path: /app/(.*)
           pathType: ImplementationSpecific
   tls: []
 
@@ -59,7 +61,14 @@ app:
   port: "8080"
   logLevel: "info"
 
+metrics:
+  serviceMonitor:
+    enabled: true
+
 postgresql:
+  metrics:
+    enabled: true
+
   fullnameOverride: postgres
   postgresqlUsername: myuser
   postgresqlPassword: passwd

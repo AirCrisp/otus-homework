@@ -43,13 +43,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/user",
+					"raw": "http://{{host}}:{{port}}/app/api/user",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
 					],
 					"port": "{{port}}",
 					"path": [
+						"app",
 						"api",
 						"user"
 					]
@@ -74,13 +75,14 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/user/{{userId}}",
+					"raw": "http://{{host}}:{{port}}/app/api/user/{{userId}}",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
 					],
 					"port": "{{port}}",
 					"path": [
+						"app",
 						"api",
 						"user",
 						"{{userId}}"
@@ -115,13 +117,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/user/{{userId}}",
+					"raw": "http://{{host}}:{{port}}/app/api/user/{{userId}}",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
 					],
 					"port": "{{port}}",
 					"path": [
+						"app",
 						"api",
 						"user",
 						"{{userId}}"
@@ -147,13 +150,14 @@
 					}
 				],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/user/{{userId}}",
+					"raw": "http://{{host}}:{{port}}/app/api/user/{{userId}}",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
 					],
 					"port": "{{port}}",
 					"path": [
+						"app",
 						"api",
 						"user",
 						"{{userId}}"
@@ -186,11 +190,11 @@
 	"variable": [
 		{
 			"key": "host",
-			"value": "192.168.99.110"
+			"value": "arch.homework"
 		},
 		{
 			"key": "port",
-			"value": "30807"
+			"value": "80"
 		},
 		{
 			"key": "userId",

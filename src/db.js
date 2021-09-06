@@ -36,6 +36,13 @@ export class UserRepo {
       .conn(this.table)
       .where('id', userId);
   }
+  async findAll() {
+    return this
+      .conn(this.table)
+      .select('*')
+      .limit(100)
+      .offset(0);
+  }
   async deleteOne(userId) {
     return this
       .conn(this.table)
